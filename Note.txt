@@ -1,0 +1,8 @@
+- useRef
+    * เข้าถึงโดยการ Reference ไปที่ DOM element ใช้กับ Functional component สามารถทำ initialValue (.current)
+
+- useMemo
+    * การ Cache ค่า Value ถูกเรียกครั้งแรกเมื่อมีการ Render และครั้งต่อไปเมื่อมีการ Re-Render
+
+- useCallback 
+    * การ Cache ฟังก์ชันไว้ ไม่ ถูกเรียกเมื่อมีการ Render (จะถูกเรียกเมื่อเราสั่ง Call ฟังก์ชันเอง)

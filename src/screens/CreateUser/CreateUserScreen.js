@@ -1,14 +1,48 @@
 import { BodyContent } from "common/layouts/Full";
 import { useState } from "react";
 import { Container, Grid, TextField, Button } from "@mui/material";
+import { UploadFileInput } from "components";
+import { UserService } from "services";
 
 export default function CreateUserScreen() {
  
   
   const [dataUser , setDataUser ] = useState({})
+  const [dataFile , setFileData ] = useState(null)
   
   const createUser = () => {
-    console.log(JSON.stringify(dataUser))
+    //console.log(JSON.stringify(dataUser))
+
+    let requestData = {
+      user_username : dataUser.Username , 
+      user_password : dataUser.Password 
+    }
+
+    UserService.createUser(requestData).then(res => {
+      if(res.bypass){
+          
+
+          if(dataFile){
+
+            const formData = new FormData();
+
+            formData.append("UserId", res.data)
+            formData.append("FileData", dataFile)
+
+            UserService.uploadAttachedUser(formData).then(ress => {
+              console.log(ress)
+            })
+
+          }
+
+
+          
+    
+      }
+    }).catch(e => {
+      console.error(e)
+    })
+
   };
 
   const handleTextChange = (key ,  value ) => {
@@ -17,7 +51,11 @@ export default function CreateUserScreen() {
         [key]: value
     }
     setDataUser(newData)
-}
+  }
+
+  const onCompleteUpload = (data) => {
+    setFileData(data)
+  }
 
   return (
     <BodyContent>
@@ -48,6 +86,11 @@ export default function CreateUserScreen() {
               placeholder={`Password`}
               variant="outlined"
             />
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={6} lg={6}>
+            Upload File
+            <UploadFileInput onComplete={onCompleteUpload} />
           </Grid>
 
           <Grid item xs={12} sm={12} md={12} lg={12}>

@@ -1,9 +1,14 @@
 import { BodyContent } from "common/layouts/Full";
-import * as React from "react";
-import {IconButton ,  Button , Stack , Paper , TableRow , TableHead , TableContainer , TableCell , TableBody , Table , Container} from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import { red } from "@mui/material/colors";
+import {
+  Button,
+  Stack,
+  Container,
+} from "@mui/material";
+
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import TableList from "./TableList";
+import SearchBox from "./SearchBox";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -18,46 +23,43 @@ const rows = [
 ];
 
 export default function UserScreen() {
+  const [userData, setUserData] = useState([]);
+
+  // const GetUserAll = () => {
+  //   return UserService.getUserAll().then((res) => {
+  //     console.log(res.data);
+  //   });
+  // };
+
+
+  useEffect(() => {
+
+
+  }, []);
+
+  const btnSearchBox = (data) => {
+    console.log(data)
+  }
+
   return (
     <BodyContent>
       <Container>
-
         <h3>User Page</h3>
 
-        <div style={{paddingBottom : '1%'}} ></div>
+        <div style={{ paddingBottom: "1%" }}></div>
 
         <Stack spacing={2} direction="row">
-          <Link to={`/CreateUser`}><Button variant="contained">สร้างข้อมูล</Button></Link>
+          <Link to={`/CreateUser`}>
+            <Button variant="contained">สร้างข้อมูล</Button>
+          </Link>
         </Stack>
 
-        <div style={{paddingBottom : '1%'}} ></div>
+        <div style={{ paddingBottom: "1%" }}></div>
 
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Username</TableCell>
-                <TableCell>Password</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {" "}
-                    {row.name}{" "}
-                  </TableCell>
-                  <TableCell>{row.calories}</TableCell>
-                  <TableCell> <IconButton onClick={() => { }} > <DeleteIcon /> </IconButton> </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+
+        <SearchBox submitChangeInput={btnSearchBox} />
+
+        <TableList data={rows} />
       </Container>
     </BodyContent>
   );
