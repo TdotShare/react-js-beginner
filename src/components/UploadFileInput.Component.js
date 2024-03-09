@@ -1,4 +1,5 @@
 import { MuiFileInput } from "mui-file-input";
+import { AlertService } from "services";
 import React from "react";
 
 
@@ -26,15 +27,15 @@ function UploadFileInput({ onComplete, }) {
         if (newValue !== null) {
 
             let ext = newValue.name.split('.').pop();
-            /*
+        
             if (!['png' , 'jpg'].includes(ext)) {
-                //AlertService.error({ text: `ไม่รองรับการอัปโหลดไฟล์นามสกุล .${ext}` })
+                AlertService.error({ text : `ไม่รองรับการอัปโหลดไฟล์นามสกุล .${ext}` })
                 errorsUpload = true
             }
-            */
+            
 
             if (newValue.size > sizeFile) {
-                //AlertService.error({ text: `ไม่สามารถอัปโหลดไฟล์ขนาดมากกว่า ${formatBytes(sizeFile)} ได้` })
+                AlertService.error({ text : `ไม่สามารถอัปโหลดไฟล์ขนาดมากกว่า ${formatBytes(sizeFile)} ได้` })
                 errorsUpload = true
             }
         }

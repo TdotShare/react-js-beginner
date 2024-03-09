@@ -1,9 +1,5 @@
 import { BodyContent } from "common/layouts/Full";
-import {
-  Button,
-  Stack,
-  Container,
-} from "@mui/material";
+import { Button, Stack, Container , Grid } from "@mui/material";
 
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -31,15 +27,11 @@ export default function UserScreen() {
   //   });
   // };
 
-
-  useEffect(() => {
-
-
-  }, []);
+  useEffect(() => {}, []);
 
   const btnSearchBox = (data) => {
-    console.log(data)
-  }
+    console.log(data);
+  };
 
   return (
     <BodyContent>
@@ -56,8 +48,12 @@ export default function UserScreen() {
 
         <div style={{ paddingBottom: "1%" }}></div>
 
-
-        <SearchBox submitChangeInput={btnSearchBox} />
+        <Grid container >
+          <Grid item xs={8}></Grid>
+          <Grid item xs={4} >
+            <SearchBox submitChangeInput={btnSearchBox} />
+          </Grid>
+        </Grid>
 
         <TableList data={rows} />
       </Container>
