@@ -2,7 +2,7 @@ import { BodyContent } from "common/layouts/Full";
 import { useState } from "react";
 import { Container, Grid, TextField, Button } from "@mui/material";
 import { UploadFileInput } from "components";
-import { UserService } from "services";
+import { AlertService, UserService } from "services";
 
 export default function CreateUserScreen() {
  
@@ -11,17 +11,19 @@ export default function CreateUserScreen() {
   const [dataFile , setFileData ] = useState(null)
   
   const createUser = () => {
-    //console.log(JSON.stringify(dataUser))
 
     let requestData = {
       user_username : dataUser.Username , 
       user_password : dataUser.Password 
     }
 
+    if(requestData.user_username == null || requestData.user_password == null){
+      AlertService.info({text : "กรุณากรอกข้อมูลให้ครบ !"})
+      return;
+    }
+    
     UserService.createUser(requestData).then(res => {
       if(res.bypass){
-          
-
           if(dataFile){
 
             const formData = new FormData();
@@ -30,19 +32,18 @@ export default function CreateUserScreen() {
             formData.append("FileData", dataFile)
 
             UserService.uploadAttachedUser(formData).then(ress => {
-              console.log(ress)
+              AlertService.success({text : "สร้างข้อมูลและอัปโหลดไฟล์เรียบร้อย !"})
             })
 
+          }else{
+            AlertService.success({text : "สร้างข้อมูลเรียบร้อย !"})
           }
-
-
-          
-    
       }
+      
     }).catch(e => {
       console.error(e)
     })
-
+    
   };
 
   const handleTextChange = (key ,  value ) => {

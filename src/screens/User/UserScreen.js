@@ -1,33 +1,36 @@
 import { BodyContent } from "common/layouts/Full";
-import { Button, Stack, Container , Grid } from "@mui/material";
+import { Button, Stack, Container, Grid } from "@mui/material";
 
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import TableList from "./TableList";
 import SearchBox from "./SearchBox";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+import { UserService } from "services";
+import { PageLoading } from "components";
 
 export default function UserScreen() {
   const [userData, setUserData] = useState([]);
+  const [isPageLoading, setIsPageLoading] = useState(false);
 
-  // const GetUserAll = () => {
-  //   return UserService.getUserAll().then((res) => {
-  //     console.log(res.data);
-  //   });
-  // };
+  const GetUserAll = () => {
+    return UserService.getUserAll().then((res) => {
+      if (res) {
+        setUserData(res);
+      }
+    });
+  };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setIsPageLoading(true);
+
+    Promise.all([GetUserAll()])
+      .then(() => {
+        setTimeout(() => {
+          setIsPageLoading(false);
+        }, 1000);
+      })
+      .catch(() => setIsPageLoading(false));
+  }, []);
 
   const btnSearchBox = (data) => {
     console.log(data);
@@ -35,6 +38,7 @@ export default function UserScreen() {
 
   return (
     <BodyContent>
+      <PageLoading open={isPageLoading} />
       <Container>
         <h3>User Page</h3>
 
@@ -48,14 +52,14 @@ export default function UserScreen() {
 
         <div style={{ paddingBottom: "1%" }}></div>
 
-        <Grid container >
+        <Grid container>
           <Grid item xs={8}></Grid>
-          <Grid item xs={4} >
+          <Grid item xs={4}>
             <SearchBox submitChangeInput={btnSearchBox} />
           </Grid>
         </Grid>
 
-        <TableList data={rows} />
+        {userData.length > 0 && <TableList data={userData} />}
       </Container>
     </BodyContent>
   );
