@@ -75,4 +75,16 @@ UserService.uploadAttachedUser = (req) => {
   });
 };
 
+UserService.getSearchUser = (req) => {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "post",
+      url: `${AppSettings.apiUrl}/${prefixPath}/GetSearchUser`,
+      data: req,
+    })
+      .then((response) => resolve(response.data))
+      .catch((error) => reject(error));
+  });
+}
+
 export default UserService;

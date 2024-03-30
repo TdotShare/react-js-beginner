@@ -20,20 +20,45 @@ export default function UserScreen() {
     });
   };
 
+  const offPageLoading = () => {
+    setTimeout(() => {
+      setIsPageLoading(false);
+    }, 1000);
+  };
+
   useEffect(() => {
     setIsPageLoading(true);
 
     Promise.all([GetUserAll()])
       .then(() => {
-        setTimeout(() => {
-          setIsPageLoading(false);
-        }, 1000);
+        offPageLoading();
       })
-      .catch(() => setIsPageLoading(false));
+      .catch(() => offPageLoading());
   }, []);
 
   const btnSearchBox = (data) => {
-    console.log(data);
+    setIsPageLoading(true);
+
+    if (data !== "") {
+      let requestData = {
+        searchUser: data,
+      };
+
+      UserService.getSearchUser(requestData)
+        .then((res) => {
+          if (res) {
+            setUserData(res);
+          }
+          offPageLoading();
+        })
+        .catch((e) => offPageLoading());
+    } else {
+      Promise.all([GetUserAll()])
+        .then(() => {
+          offPageLoading();
+        })
+        .catch(() => offPageLoading());
+    }
   };
 
   return (
@@ -59,7 +84,7 @@ export default function UserScreen() {
           </Grid>
         </Grid>
 
-        {userData.length > 0 && <TableList data={userData} />}
+        {!isPageLoading && <TableList data={userData} />}
       </Container>
     </BodyContent>
   );

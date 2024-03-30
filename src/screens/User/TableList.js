@@ -43,6 +43,7 @@ export default function TableList(props) {
   const [cellsList] = useState([
     { name: "Username", size: "150px" },
     { name: "Password", size: "150px" },
+    { name: "File", size: "150px" },
   ]);
 
   useEffect(() => {
@@ -72,6 +73,7 @@ export default function TableList(props) {
                   {item.user_username}
                 </StyledTableCell>
                 <StyledTableCell>{item.user_password}</StyledTableCell>
+                <StyledTableCell>{item.attachFileName}</StyledTableCell>
               </TableRow>
             ))}
         </TableBody>
